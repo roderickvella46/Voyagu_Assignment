@@ -1,0 +1,82 @@
+<div class="flight-list-container">
+  <div class="filters-section">
+    <h2>Business Class</h2>
+    <div class="sort-by">
+      <h3>Sort by</h3>
+      <div class="sort-options">
+        <button mat-button [class.active]="sortBy === 'price'" (click)="updateSort('price')">
+          Price ({{sortOrder === 'asc' ? 'Lowest' : 'Highest'}})
+        </button>
+      </div>
+    </div>
+
+    <div class="price-filter">
+      <h3>Price</h3>
+      <div class="price-range">
+        <input type="number" [value]="filters.priceRange[0]"
+               (change)="updateFilters(filters, $event, 'first')"
+               placeholder="Min Price">
+        <span>-</span>
+        <input type="number" [value]="filters.priceRange[1]"
+               (change)="updateFilters(filters, $event, 'last')"
+               placeholder="Max Price">
+      </div>
+    </div>
+
+    <div class="stops-filter">
+      <h3>Stops</h3>
+      <div class="stops-options">
+        <mat-radio-group [(ngModel)]="filters.stops" (ngModelChange)="updateFilters(null, $event)">
+          <mat-radio-button value="all">All stops</mat-radio-button>
+          <mat-radio-button value="nonstop">Nonstop</mat-radio-button>
+          <mat-radio-button value="1stop">1+ stop</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+
+  <div class="flights-section">
+    <mat-card *ngFor="let flight of displayedFlights" class="flight-card">
+      <div class="flight-segments">
+        <div *ngFor="let segment of flight.flights; let i = index" class="flight-segment">
+          <div class="airline-logo">
+            <img [src]="getAirlineLogo(segment.airline)" [alt]="segment.airline">
+          </div>
+          <div class="flight-times">
+            <div class="departure">
+              <span class="time">{{segment.departure_time}}</span>
+              <span class="airport">{{segment.departure_airport}}</span>
+              <span class="date">{{segment.departure_date}}</span>
+            </div>
+            <div class="duration">
+              <span>{{segment.duration_minutes}} min</span>
+              <div class="flight-line">
+                <span class="dot"></span>
+                <span class="line"></span>
+                <span class="dot"></span>
+              </div>
+              <span *ngIf="segment.stops > 0">{{segment.stops}} stop</span>
+            </div>
+            <div class="arrival">
+              <span class="time">{{segment.arrival_time}}</span>
+              <span class="airport">{{segment.arrival_airport}}</span>
+              <span class="date">{{segment.arrival_date}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flight-price">
+        <span class="price">${{flight.price.toFixed(2)}}</span>
+        <span class="per-person">per adult</span>
+        <button mat-raised-button color="primary" (click)="bookFlight(flight)">Book</button>
+      </div>
+    </mat-card>
+
+    <button *ngIf="displayedFlights.length < flights.length"
+            mat-button class="show-more"
+            (click)="showMore()">
+      Show more
+    </button>
+  </div>
+</div>

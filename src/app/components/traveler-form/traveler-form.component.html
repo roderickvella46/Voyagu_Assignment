@@ -1,0 +1,100 @@
+<div class="traveler-form-container">
+  <div class="form-header">
+    <h2>Business Class</h2>
+  </div>
+
+  <div class="form-content">
+    <div class="traveler-section">
+      <h3>Travelers</h3>
+      <div class="traveler-info">
+        <h4>Traveler 1: Adult</h4>
+        
+        <form [formGroup]="travelerForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>First name</mat-label>
+              <input matInput formControlName="firstName" required>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>Last name</mat-label>
+              <input matInput formControlName="lastName" required>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <label>Gender</label>
+            <mat-radio-group formControlName="gender">
+              <mat-radio-button value="male">Male</mat-radio-button>
+              <mat-radio-button value="female">Female</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="form-row birth-date">
+            <label>Date of birth</label>
+            <div class="date-inputs">
+              <mat-form-field>
+                <mat-label>Month</mat-label>
+                <mat-select formControlName="birthMonth">
+                  <mat-option *ngFor="let month of months" [value]="month.value">
+                    {{month.label}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Day</mat-label>
+                <mat-select formControlName="birthDay">
+                  <mat-option *ngFor="let day of days" [value]="day">
+                    {{day}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Year</mat-label>
+                <mat-select formControlName="birthYear">
+                  <mat-option *ngFor="let year of years" [value]="year">
+                    {{year}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>Citizenship</mat-label>
+              <input matInput formControlName="citizenship" required>
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="price-summary">
+      <h3>Price summary</h3>
+      <div class="summary-content">
+        <div class="summary-row">
+          <span>Flight</span>
+          <span>${{selectedFlight?.price?.toFixed(2)}}</span>
+        </div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span>${{selectedFlight?.price?.toFixed(2)}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button mat-button (click)="onBack()">Back</button>
+    <button mat-raised-button color="primary" 
+            [disabled]="!travelerForm.valid" 
+            (click)="onSubmit()">
+      Confirm
+    </button>
+  </div>
+</div> 
